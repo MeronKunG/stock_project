@@ -1,0 +1,87 @@
+{% extends 'base2.html.twig' %}
+{% block title %}กำหนด SKU Information{% endblock %}
+	{% block body %}
+		{{ form_start(formSku) }}
+		<div class="row">
+			<div class="col-md-12" style="margin-top: 20px;">
+				<div class="form-group">
+					<label>รหัส SKU</label>
+					{{ form_widget(formSku.skuCode, {"attr": {"class" : "form-control", "readOnly" : "true"}}) }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>ชื่อ SKU</label>
+					{{ form_widget(formSku.skuName, {"attr": {"class" : "form-control", "readOnly" : "true"}}) }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>สถานะ</label>
+					{{ form_widget(formSku.skuStatus, {"attr": {"class" : "form-control"}}) }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>Material</label>
+					<input id="materialNameForm" class = "e1 form-control"/>
+				</div>
+			</div>
+		</div>
+
+	{# <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+		บันทึก
+	</button> #}
+	<!-- The Modal -->
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">บันทึกข้อมูล SKU</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					คุณต้องการบันทึกข้อมูลใช่หรือไม่
+				</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+				    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="update" data-dismiss="modal">ยืนยัน</button>
+					
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+<div class="wrapper" >
+	<table  id="materialTable">
+		<thead>
+			<tr style=" background-color: #c1d4ce;">
+				<th scope="col" style=" text-align: center;">รหัส Material</th>
+				<th scope="col" style=" text-align: center;">ชื่อ Material</th>
+				<th scope="col" style=" text-align: center;">Quantity</th>
+				<th scope="col" style=" text-align: center;">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+	{{ form_widget(formSku.update)}}
+	{{ form_end(formSku) }}
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{asset('js/scriptUpdateSku.js')}}"></script>
+{% endblock %}

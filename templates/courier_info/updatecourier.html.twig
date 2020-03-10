@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}แก้ไขข้อมูล Courier{% endblock %}
+
+    {% block body %}
+        {{ form_start(formCourier) }}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>รหัส Courier</label>
+                    {{ form_widget(formCourier.courierCode, {"attr": {"class" : "form-control","Readonly" : "true"}}) }} 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ชื่อ Courier</label>
+                    {{ form_widget(formCourier.courierName, {"attr": {"class" : "form-control","Readonly" : "true"}}) }} 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ชื่อย่อ Courier</label>
+                    {{ form_widget(formCourier.courierPrefix, {"attr": {"class" : "form-control","Readonly" : "true"}}) }} 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ขนาดพัสดุ ที่รับได้สูงสุด</label>
+                    {{ form_widget(formCourier.sizeCode, {"attr": {"class" : "form-control"}}) }} 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>สถานะ</label>
+                    {{ form_widget(formCourier.courierStatus, {"attr": {"class" : "form-control"}}) }} 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form_widget(formCourier.update, {"attr": {"class" : "btn btn-outline-primary float-right"}}) }}
+                </div>
+            </div>
+        </div>
+
+        {{ form_end(formCourier) }}
+    {% endblock %}

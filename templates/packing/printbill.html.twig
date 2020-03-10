@@ -1,0 +1,206 @@
+{% block stylesheets %}
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+    <link href="{{ asset('css/styleA4test.css') }}" rel="stylesheet" type="text/css"/>
+    <style>
+
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+        }
+
+        #customers td, #customers th {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            color: black;
+        }
+
+        .pagenum {
+            text-align: center;
+            display: none;
+        }
+
+        @media print {
+            .page-break {
+                display: block;
+                height: 0.3cm;
+                page-break-before: always;
+            }
+
+            .page-break-no {
+                display: block;
+                height: 0cm;
+                page-break-after: avoid;
+            }
+
+            .fixde {
+                position: fixed;
+                bottom: 20px;
+                margin-bottom: 30px;
+                text-align: center;
+            }
+
+            .pagenum {
+                position: absolute;
+                display: block;
+                margin-top: 280mm;
+                margin-left: 90mm;
+            }
+        }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+    <body class="page">
+    <div class="page-break-no"></div>
+    <table width="80%" style="border:0px solid; margin-top:20px;" align="center" border="0" cellspacing="0"
+           cellpadding="0">
+        <tr>
+            <th width="80"></th>
+            <th style="padding-top: 5px;text-align: center;"><label
+                        style="font-size: 22px;height: 20px;">รายการเบิก</label></th>
+            <th width="30" style="text-align: right; padding-top: 5px;"><label
+                        style="font-size: 16px;height: 20px;margin-right: 20px;">{{ datetime }}</label></th>
+        </tr>
+
+        {% set page = 0 %}
+        {% for item in skuItems %}
+        {% if loop.index0 is divisible by(20) %}
+        {% set page = page + 1 %}
+        <div class="pagenum">
+            <label> -Page {{ page }}-</label>
+        </div>
+        <tr>
+            <!-- page body -->
+            <table width="80%" style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0"
+                   id="customers">
+                <tr style="height:30px;"></tr>
+                <tr>
+                    <th width="5%" style="text-align: center;">No.</th>
+                    <th width="20%" style="text-align: center;">SKU Code</th>
+                    <th width="50%" style="text-align: center;">SKU Name</th>
+                    <th width="15%" style="text-align: center;">จำนาน</th>
+                </tr>
+                {% endif %}
+
+                <tr>
+                    <td style="text-align: center;">{{ loop.index }}</td>
+                    <td style="text-align: center;">{{ item.skuCode }}</td>
+                    <td style="text-align: left;">{{ item.skuName }}</td>
+                    <td style="text-align: right;">{{ item.skuQty }}</td>
+                </tr>
+
+                {% if loop.index is divisible by(20) or loop.last %}
+            </table>
+            <!-- end page body -->
+        </tr>
+    </table>
+
+    {% if not loop.last %}
+        <div class="page-break"></div>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+
+
+
+    <div class="page-break"></div>
+    <!--   page 2 -->
+    <table width="80%" style="border:0px solid; margin-top:20px;" align="center" border="0" cellspacing="0"
+           cellpadding="0">
+
+        <tr>
+            <th width="80"></th>
+            <th style="padding-top: 5px;text-align: center;"><label
+                        style="font-size: 22px;height: 20px;">รายการเบิก</label></th>
+            <th width="30" style="text-align: right; padding-top: 5px;"><label
+                        style="font-size: 16px;height: 20px;margin-right: 20px;">{{ datetime }}</label></th>
+        </tr>
+        {% set page = 0 %}
+        {% for item in materialItems %}
+
+        {% if loop.index0 is divisible by(20) %}
+        {% set page = page + 1 %}
+        <div class="pagenum ">
+            <label style="text-align: center;"> -Page {{ page }}-</label>
+        </div>
+
+        <tr>
+            <!-- page body -->
+            <table width="80%" style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0"
+                   id="customers">
+                <tr style="height:30px;"></tr>
+                <tr>
+                    <th width="5%" style="text-align: center;">No.</th>
+                    <th width="20%" style="text-align: center;">Material Code</th>
+                    <th width="50%" style="text-align: center;">Material Name</th>
+                    <th width="15%" style="text-align: center;">จำนวน</th>
+                </tr>
+                {% endif %}
+
+                <tr>
+                    <td style="text-align: center;">{{ loop.index }}</td>
+                    <td style="text-align: center;">{{ item.materialCode }}</td>
+                    <td style="text-align: left;">{{ item.materialName }}</td>
+                    <td style="text-align: right;">{{ item.materialQty }}</td>
+                </tr>
+
+                {% if loop.index is divisible by(20) or loop.last %}
+
+
+            </table>
+            <!-- end page body -->
+
+        </tr>
+    </table>
+
+
+        {% if not loop.last %}
+
+            <div class="page-break"></div>
+        {% endif %}
+        {% endif %}
+
+
+
+    {% endfor %}
+
+
+    <table class="fixde" width="100%"
+           style="text-align:center; border:0; cellspacing:0; cellpadding:0;margin-top: 50px;">
+        <tbody>
+        <tr>
+            <th>_____________________________</th>
+            <th>_____________________________</th>
+        </tr>
+        <tr  >
+            <th style="padding-top: 20px;">(..................................)</th>
+            <th style="padding-top: 20px;">(..................................)</th>
+        </tr>
+        <tr>
+            <th>ผู้เบิก</th>
+            <th>Stock</th>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+    </body>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+
+{% endblock %}

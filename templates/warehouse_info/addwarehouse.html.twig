@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ข้อมูล Warehouse{% endblock %}
+
+    {% block body %}
+        {% for label, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                {% if ( label == 'success' ) %}
+                    <div class="alert alert-success alert-dismissible fade show">
+                        {{ flash }}
+                    </div>
+                {% elseif ( label == 'error' ) %}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        {{ flash }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        {{ form_start(formWarehouse) }}
+        <div class="row">
+            <div class="col-md-12" style="margin-top: 20px;" >
+                <div class="form-group">
+                    <label>รหัส Warehouse <a style="color: red">*</a></label>
+                    {{ form_widget(formWarehouse.warehouseCode, {"attr": {"class" : "form-control", "maxlength" : "20"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ชื่อ Warehouse <a style="color: red">*</a></label>
+                    {{ form_widget(formWarehouse.warehouseName, {"attr": {"class" : "form-control"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form_widget(formWarehouse.save, {"attr": {"class" : "btn btn-outline-primary float-right"}}) }}
+                </div>
+            </div>
+        </div>
+
+        {{ form_end(formWarehouse) }}
+    {% endblock %}

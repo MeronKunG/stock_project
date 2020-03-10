@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block title %}แก้ไขข้อมูล Material{% endblock %}
+    {% block body %}
+	    {{ form_start(formMaterial) }}
+	    <div class="row">
+		    <div class="col-md-12" style=" margin-top: 20px;">
+			    <div class="form-group">
+				    <label>รหัส Material</label>
+				    {{ form_widget(formMaterial.materialCode, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+			    </div>
+		    </div>
+	    </div>
+	    <div class="row">
+		    <div class="col-md-12">
+			    <div class="form-group">
+				    <label>ชื่อ Material</label>
+				    {{ form_widget(formMaterial.materialName, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+			    </div>
+		    </div>
+	    </div>
+	    <div class="row">
+		    <div class="col-md-12">
+
+			    <div class="form-group">
+				    <label>ชื่อ Full Material</label>
+				    {{ form_widget(formMaterial.materialFullName, {"attr": {"class" : "form-control"}}) }}
+			    </div>
+		    </div>
+	    </div>
+	    <div class="row">
+		    <div class="col-md-12">
+			    <div class="form-group">
+				    <label>สถานะ</label>
+				    {{ form_widget(formMaterial.materialStatus, {"attr": {"class" : "form-control"}}) }}
+			    </div>
+		    </div>
+	    </div>
+	    <div class="row">
+		    <div class="col-md-12">
+			    <div class="form-group">
+				<label>Attachment</label>
+				<div class="row">
+				    {% if materialImage == null %}
+					    <img alt="Image" class="img-thumbnail example-image img-fluid" style="margin-left: 20px;margin-right: 20px;"
+					         src="{{ asset('images/no-image-small.jpg') }}"/>
+					    {{ form_widget(formMaterial.materialImage) }}
+				    {% else %}
+					    <a class="example-image-link" href="{{ asset('uploads/images/large/' ~ materialImage) }}"
+					       data-lightbox="example-2" data-title="{{ materialImage }}"><img alt="Image"
+					                                                                       class="img-thumbnail example-image img-fluid"
+					                                                                       src="{{ asset('uploads/images/small/' ~ materialImage) }}"/></a>
+					    {{ form_widget(formMaterial.materialImage) }}
+				    {% endif %}
+				</div>
+			    </div>
+		    </div>
+	    </div>
+	    <div class="row">
+		    <div class="col-md-12">
+			    <div class="form-group">
+				    {{ form_widget(formMaterial.update, {"attr": {"class" : "btn btn-outline-primary float-right"}}) }}
+			    </div>
+		    </div>
+	    </div>		
+	    {{ form_end(formMaterial) }}
+    {% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('js/lightbox.js') }}"></script>
+{% endblock %}

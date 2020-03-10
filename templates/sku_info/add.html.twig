@@ -1,0 +1,70 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}กำหนด SKU Information{% endblock %}
+
+	{% block body %}
+		{% for label, flashes in app.session.flashbag.all %}
+			{% for flash in flashes %}
+				{% if ( label == 'success' ) %}
+					<div class="alert alert-success alert-dismissible fade show">
+						{{ flash }}
+					</div>
+				{% elseif ( label == 'error' ) %}
+					<div class="alert alert-danger alert-dismissible fade show">
+						{{ flash }}
+					</div>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+		{{ form_start(formSku, {"attr": {"id" : "sku_info"}}) }}
+		<div class="row">
+			<div class="col-md-12" style="margin-top: 20px;">
+				<div class="form-group">
+					<label>รหัส SKU <a style="color: red">*</a></label>
+					{{ form_widget(formSku.skuCode, {"attr": {"class" : "form-control"}}) }}
+					{{ form_errors(formSku.skuCode) }}
+				</div>
+			</div>
+		</div>
+        {# <a onclick="generatesku()"><button type="button" class="btn btn-primary" id="generateCode">Generate</button></a> #}
+       
+		<div class="row">
+			<div class="col-md-12" >
+				<div class="form-group">
+					<label>ชื่อ SKU <a style="color: red">*</a></label>
+					{{ form_widget(formSku.skuName, {"attr": {"class" : "form-control"}}) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>Material <a style="color: red">*</a></label>
+					<input id="materialNameForm" class = "e1 form-control"/>
+				</div>
+			</div>
+		</div>
+
+	<div class="wrapper" >
+		<table id="materialTable">
+			<thead>
+			<tr style=" background-color: #c1d4ce;">
+				<th scope="col" style=" text-align: center;">รหัส Material</th>
+				<th scope="col" style=" text-align: center;">ชื่อ Material</th>
+				<th scope="col" style=" text-align: center;">Quantity</th>
+				<th scope="col" style=" text-align: center;">Action</th>
+			</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>					
+				{{ form_widget(formSku.save) }}
+	</div>
+				{{ form_end(formSku) }}
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{asset('js/scriptSku.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('css/lightbox.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/easy-autocomplete.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/loading.css') }}"/>
+    <!-- Include SmartWizard CSS -->
+    <link href="{{ asset('css/smart_wizard.css') }}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <!-- Optional SmartWizard theme -->
+    <link href="{{ asset('css/smart_wizard_theme_circles.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('css/smart_wizard_theme_arrows.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('css/smart_wizard_theme_dots.css') }}" rel="stylesheet" type="text/css"/>
+
+    {% block stylesheets %}{% endblock %}
+    <style>
+        body {
+            background-color: #ebebeb;
+            overflow-y: auto;
+            height: auto;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        table.materialTable {
+            table-layout: fixed;
+            word-break: break-all;
+            /*width: 100%;  */
+        }
+
+        table.materialTable {
+            table-layout: fixed;
+            word-break: break-all;
+            /*width: 100%;  */
+        }
+
+        .wrapper {
+            overflow: auto;
+            border-radius: 6px;
+            border: 1px solid #BEBEBE;
+            margin-top: 15px;
+        }
+        .wrapper-update {
+            width: 100%;
+            overflow: auto;
+            border-radius: 6px;
+            border: 1px solid #BEBEBE;
+            margin-top: 15px;
+        }
+
+
+        .wrapper tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .wrapper tr:hover {
+            background-color: #ddd;
+        }
+
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+            border-style: hidden;
+            /*width: 100%;*/
+            /*max-width: 100%;*/
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #425DCE;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #BEBEBE;
+        }
+        ul{
+            margin-bottom: 0 !important;
+        }
+
+        .navigation{
+            margin-top: 10px;
+            margin-bottom: 10px;
+
+        }
+        .select2-selection{
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+{{ include('inc/navbar.html.twig') }}
+
+<div class="container">
+    {% block body %}{% endblock %}
+</div>
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="{{ asset('js/jquery.smartWizard.min.js') }}"></script>
+    <script src="{{ asset('js/loading.js') }}"></script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ข้อมูล Pending{% endblock %}
+
+
+
+  {% block body %}
+      {% for label, flashes in app.session.flashbag.all %}
+          {% for flash in flashes %}
+              {% if ( label == 'success' ) %}
+                  <div class="alert alert-success alert-dismissible fade show">
+                      {{ flash }}
+                  </div>
+              {% elseif ( label == 'error' ) %}
+                  <div class="alert alert-danger alert-dismissible fade show">
+                      {{ flash }}
+                  </div>
+              {% endif %}
+          {% endfor %}
+      {% endfor %}
+      <div class="row">
+          <div class="col-md-12" style=" margin-top: 25px;">
+              <div>
+                  <label>กรุณาระบุเลข Invoice หรือ ชื่อผู้รับ สำหรับค้นหา</label>
+                  <form action="" method="get">
+                      <div class="form-row align-items-center">
+                          <div class="col-sm-11">
+                              <input type="text" name="search" class="form-control" id="searchTracking"
+                                     placeholder="Search...">
+                          </div>
+                          <div class="col-auto my-1">
+                              <button type="submit" class="btn btn-outline-primary">Search</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              {{ form_start(formPending)}}
+
+              <div class="row" >
+                  <div class="col-md-12" style="text-align: center;margin-top: 10px;">
+                      <b style="font-size: 22px">รายการสำหรับรอการปลด Pending</b>
+                  </div>
+              </div>
+              <div class="wrapper">
+                  <table id="table_invoice">
+                      <tr>
+                          <th style=" text-align: center;" width="18%">รหัส Invoice</th>
+                          <th style=" text-align: center;" width="10%">วันที่สั่งสินค้า</th>
+                          <th style=" text-align: center;" width="15%">ชื่อผู้รับ</th>
+                          <th style=" text-align: center;">ที่อยุ่</th>
+                          <th style=" text-align: center;" width="5%">รหัสไปรษณีย์</th>
+                          <th style=" text-align: center;" width="30%">หมายเหตุ</th>
+{#                          <th style=" text-align: center;"><input name="CheckAll" type="checkbox" id="checkAll" onclick="ClickCheckAll(document.update_pending.check)">#}
+                          <th style=" text-align: center;" width="5%">Action</th>
+
+              </th>
+                      </tr>
+                      <tbody>
+                      {% if items|length == 0 %}
+                          <tr>
+                              <td colspan="7" style=" text-align: center;">ไม่พบข้อมูล</td>
+                          </tr>
+                      {% else %}
+                          {% for item in items %}
+                              <tr>
+                                  <td scope="row" style=" text-align: center;" width="18%">{{ item.subInvoice }}</td>
+                                  <td scope="row" style=" text-align: center;" width="10%">{{ item.orderReceiveAt | date('d/m/Y H:i:s') }}</td>
+                                  <td scope="row" style=" text-align: left;" width="15%">{{ item.orderName }}</td>
+                                  <td scope="row" style=" text-align: left;">{{ item.orderAddress }}</td>
+                                  <td scope="row" style=" text-align: center;" width="5%">{{ item.postCode }}</td>
+                                  <td scope="row" style=" text-align: left;" width="30%"><b>{{ item.orderShortNote }}</b></td>
+
+                                  <td scope="row" style=" text-align: center;" width="5%">
+{#                                      <a href="/pending/update?subinvoice={{ item.subInvoice }}"><i#}
+{#                                                 class="fa fa-pencil-square-o"#}
+{#                                                 aria-hidden="true"></i></a>#}
+                                      <input type="checkbox" name="check" id="checkInvoice" value="{{ item.subInvoice }}" onclick="checkedListInvoice()">
+                                  </td>
+
+                                  </td>
+                              </tr>
+                          {% endfor %}
+                      {% endif %}
+                      </tbody>
+                  </table>
+              </div>
+
+              <div class="navigation float-right" style="margin-top: 10px;">
+                 {{ knp_pagination_render(items) }}
+              </div>
+
+                  <div class="col-10 col-md-10 float-right" style="padding-right: 0px; margin-bottom: 10px">
+               {{ form_widget(formPending.update) }}
+                  </div>
+
+          </div>
+      </div>
+
+      {{ form_end(formPending)}}
+  {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+<script>
+    function checkedListInvoice() {
+        var fields = $( "input:checkbox:checked" ).serializeArray();
+        $("#update_pending_hiddenForm").val(JSON.stringify(fields));
+    }
+
+    function ClickCheckAll(vol)
+    {
+        if(checkAll.checked)
+        {
+            $("#update_pending_hiddenForm").val("");
+            for (i = 0; i < vol.length; i++)
+            {
+                vol[i].checked = true ;
+                var fields = $( "input:checkbox:checked" ).serializeArray();
+                $("#update_pending_hiddenForm").val(JSON.stringify(fields));
+            }
+
+        } else {
+            for (i = 0; i < vol.length; i++) {
+                vol[i].checked = false;
+                $("#update_pending_hiddenForm").val("");
+            }
+
+        }
+    }
+</script>
+{% endblock %}

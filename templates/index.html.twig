@@ -1,0 +1,225 @@
+{% block stylesheets %}
+    <!-- Style Print -->
+    <link href="{{ asset('css/print_style.css') }}" rel="stylesheet" type="text/css"/>
+
+    <style>
+
+        .cut-text {
+            width: 300px;
+            word-wrap: break-word;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+    <body class="page">
+
+        <div class="page-break-no"></div>
+    <div style="height: 30px;"></div>
+        {% for item in labels %}
+        {% if loop.index0 is divisible by(8) %}
+        <!-- start page -->
+        <table  style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0" >
+            {% endif %}
+
+            {% if loop.index is odd %}
+            <!-- start row -->
+            <tr>
+                <td>
+                    <table  height="260" style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0" >
+                        <tbody>
+                        <tr>
+                            <th width="250" style="text-align: left;padding-top: 5px;"><label
+                                        style="font-size: 16px;height: 20px;">{{ item.invoiceCode }}</label>
+
+
+                            </th>
+                            <th width="120" style="text-align: right; padding-top: 5px;"><label
+                                        style="font-size: 16px;height: 20px;margin-right: 20px;">{{ item.orderPhoneNo }}</label>
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <b>{{ item.orderName }}</b>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" max-height="10">
+                                <p style="margin-top: 0px;margin-bottom: 0px;"
+                                   class="cut-text">{{ item.orderAddress }}</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" width="100" max-height="10">
+                                <p style="margin-top: 0px;margin-bottom: 0px; font-size: 14px;"
+                                   class="cut-text">
+                                    Aqua คอลลาเจน (2) แพ็ค ,Aqua คอลลาเจน (2) แพ็ค ,Aqua คอลลาเจน (2) แพ็ค</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <img src="data:image/png;base64,{{ barcode({code: 'TDZ19021122', type: 'qrcode', format: 'png', width: 3, height: 3, color: [0, 0, 0]}) }}"/>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td style="text-align:center;"><b>{{ item.tracking }}</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="barcode">{{ barcode({code: 'TDZ19021122', type: 'c39', format: 'svg',width: 1 }) }}</div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td><b>{{ item.typeTransport }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center; ">
+                                                        <label>{{ item.logisticsSelector }}</label></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="height: 15px;padding-bottom: 10px;padding-top: 0px;">
+                                <label style="font-size: 12px;">NOTE :<i>{{ item.orderShortNote }}</i></label>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+
+                {% else %}
+                <td>
+                    <table height="260" style="border:0px solid" align="center" border="0" cellspacing="0"
+                           cellpadding="0">
+                        <tbody>
+                        <tr>
+                            <th width="200" style="text-align: left;padding-top: 5px;"><label
+                                        style="font-size: 16px;height: 20px;">{{ item.invoiceCode }}</label>
+
+
+                            </th>
+                            <th width="100" style="text-align: right; padding-top: 5px;"><label
+                                        style="font-size: 16px;height: 20px;margin-right: 20px;">{{ item.orderPhoneNo }}</label>
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <b>{{ item.orderName }}</b>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" max-height="10">
+                                <p style="margin-top: 0px;margin-bottom: 0px;"
+                                   class="cut-text">{{ item.orderAddress }}</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" width="100" max-height="10">
+                                <p style="margin-top: 0px;margin-bottom: 0px; font-size: 14px;"
+                                   class="cut-text">
+                                    Aqua คอลลาเจน (2) แพ็ค ,Aqua คอลลาเจน (2) แพ็ค ,Aqua คอลลาเจน (2) แพ็ค</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <img src="data:image/png;base64,{{ barcode({code: 'TDZ19021122', type: 'qrcode', format: 'png', width: 3, height: 3, color: [0, 0, 0]}) }}"/>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td style="text-align:center;"><b>{{ item.tracking }}</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="barcode">{{ barcode({code: 'TDZ19021122', type: 'c39', format: 'svg',width: 1 }) }}</div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td><b>{{ item.typeTransport }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center; ">
+                                                        <label>{{ item.logisticsSelector }}</label></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="height: 15px;padding-bottom: 10px;padding-top: 0px;">
+                                <label style="font-size: 12px;">NOTE :<i>{{ item.orderShortNote }}</i></label>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+                {% endif %}
+
+                {% if loop.last and loop.length is odd %}
+                <td width="300">PAD</td>
+            </tr>
+                {% endif %}
+
+            {% if loop.index is divisible by(8) or loop.last %}
+        </table>
+                <div class="page-break"></div>
+                <!--   page 2 -->
+                <div style="height: 30px;"></div>
+
+            {% endif %}
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+    </body>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+
+{% endblock %}

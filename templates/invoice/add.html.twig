@@ -1,0 +1,59 @@
+{% extends 'base3.html.twig' %}
+
+{% block title %}Invoice{% endblock %}
+
+{% block body %}
+
+		{% for label, flashes in app.session.flashbag.all %}
+			{% for flash in flashes %}
+				{% if ( label == 'success' ) %}
+					<div class="alert alert-success alert-dismissible fade show">
+						{{ flash }}
+					</div>
+				{% elseif ( label == 'error' ) %}
+					<div class="alert alert-danger alert-dismissible fade show">
+						{{ flash }}
+					</div>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+
+		{{ form_start(formInvoice, {"attr": {"id" : "Invoice"}}) }}
+
+		<div class="row">
+			<div class="col-md-12" style="margin-top: 20px;">
+				<div class="form-group">
+					<label>รหัสการสั่งซื้อ</label>
+					{{ form_widget(formInvoice.invoiceCode, {"attr":  {"class" : "form-control"}}) }}
+				</div>
+			</div>
+		</div>
+		{{ form_end(formInvoice) }}
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+            function searchInvoice() {
+                $.ajax({
+                    type: "GET",
+                    url: "http://110.171.97.215/",
+                    //data: {'skuCode' : 'SKU1904104220'},
+                    success: function (data) {
+                        //$("#invoice_invoiceCode").val(data.skuCode);
+                       console.log(JSON.stringify(data));
+					   $.ajax({
+							type: "GET",
+                    		url: "/invoice/add",
+							data:{},
+							success: function(){
+
+							}
+					   })
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error : ' + errorThrown);
+            }
+            });
+            }
+	</script>
+{% endblock %}

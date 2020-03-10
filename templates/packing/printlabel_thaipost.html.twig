@@ -1,0 +1,209 @@
+{% block stylesheets %}
+	<!-- Style Print -->
+	<link href="{{ asset('css/styleA4test.css') }}" rel="stylesheet" type="text/css"/>
+
+	<style>
+		.cut-text {
+			width: 190px;
+			word-wrap: break-word;
+		}
+
+		.cut-transport {
+			width: 50px;
+			word-wrap: break-word;
+		}
+		.box-address{
+			height:20px;
+			width:180px;
+			border: 1px solid #000000;
+			color:back;
+			font-size:8px;
+		}
+		.box-cod{
+			height:60px;
+			width:180px;
+			border: 1px solid #000000;
+			color:back;
+			font-size:8px;
+		}
+		.box-name{
+			height:60px;
+			width:160px;
+			border: 1px solid #fff;
+			color:back;
+			font-size:8px;
+			margin-left:10px;
+			margin-top:5px;
+		}
+		.box-default{
+			height:68px;
+			width:160px;
+			border: 1px solid #fff;
+			color:back;
+			font-size:8px;
+			margin-left:10px;
+		}
+		
+
+
+	</style>
+
+{% endblock %}
+
+{% block body %}
+	<div class="page">
+	<div class="page-break-no"></div>
+	<div style="height: 40px;"></div>
+	{% for item in labels %}
+		{% if loop.index0 is divisible by(8) %}
+			<!-- start page -->
+			<table  style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0" >
+		{% endif %}
+
+		{% if loop.index is odd %}
+		<!-- start row -->
+		<tr>
+		<td>
+			<table height="260" style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+				<tr>
+					<th width="175" style="text-align: left;padding-top: 3px;"><label
+								style="font-size: 16px;height: 20px;margin-left: 10px;">{{ item.invoice }}</label>
+								<p style="font-size: 16px;height: 20px;margin-left: 10px;">ผู้รับ</p>
+
+					</th>
+					<th width="175">
+					<b style="font-size:10px;text-align: right;margin-top: 3px;">MY945.ME</b>&nbsp;&nbsp;&nbsp;<b style="font-size:10px;">DROP OFF</b>
+					<p style="font-size:8px; margin-top: 0px;margin-bottom: 0px;">บริการ e-Parcel  </p>
+					<p style="font-size:8px; margin-top: 0px;margin-bottom: 0px;"> ใบอนุญาตลูกค้าธุรกิจ ขล. 2/2562</p>
+					<div class="box-address">
+					<label>บริษัท 945 โฮลดิ้ง จำกัด 945 หมู่ 5 ต.คูคต อ.ลำลูกกา ปทุมธานี 12130</label>
+					</div>
+					</th>
+				</tr>
+				<tr>
+				<td>
+				<div class="box-name">
+			
+					   <p class="cut-text"	style=" margin-bottom: 0px;margin-top: 0px; font-weight: bold; font-size: 14px;">{{ item.orderName }}</p>
+						<p style="margin-top: 0px;margin-bottom: 0px;font-size: 14px;"
+						   class="cut-text">{{ item.orderAddress }} {{ item.postCode }}</p>
+					<p style="margin-top: 0px;margin-bottom: 0px; font-size: 12px;"
+						   class="cut-text">
+							{{ item.materialLabel }}</p>
+					<p style="margin-top: 0px;margin-bottom: 0px;font-size: 14px;"><b>โทร. </b>{{ item.orderPhoneNo }}</p>				
+				</div>
+				<div class="box-default">
+				</div>
+				<div class="box-name">
+					<label style="font-size: 12px;">NOTE :<i>{{ item.orderShortNote }}</i></label>
+	
+				</div>
+				</td>
+				  <td  style="text-align:center;">
+				       <p style="margin-top: 0px;margin-bottom: 0px;">
+						<img style="margin-left: 10px;" src="data:image/png;base64,{{ barcode({code: item.tracking, type: 'qrcode', format: 'png', width: 3, height: 3, color: [0, 0, 0]}) }}"/>
+					  </p>  
+						<div style="font-size:0;position:relative;width:145px;margin-left: 20px;margin-top: 2px;">
+						{{ barcode({code: item.tracking, type: 'c128', format: 'svg' ,width: 1 , height: 22,}) }}
+						</div>
+							 <p style="margin-top: 0px;margin-bottom: 0px;">{{ item.tracking }}</p>
+						 <div class="box-cod">
+						  <p style="margin-top: 0px;margin-bottom: 0px;font-size:20px;"><b>COD</b></p>
+						  <p style="margin-top: 0px;margin-bottom: 0px;font-size:10px;">พัสดุเก็บเงินปลายทาง</p>
+						  <p style="margin-top: 0px;margin-bottom: 0px;font-size:10px;text-align:left !important;">
+								&nbsp;เก็บเงิน  <b style="font-size:20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.codValue }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+								บาท
+						  </p>
+						</div>
+				  </td>
+				</tr>
+				</tbody>
+			</table>
+		</td>
+		<td width="35"></td>
+	{% else %}
+				<td>
+			<table height="260" style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+				<tr>
+					<th width="175" style="text-align: left;padding-top: 3px;"><label
+								style="font-size: 16px;height: 20px;margin-left: 10px;">{{ item.invoice }}</label>
+								<p style="font-size: 16px;height: 20px;margin-left: 10px;">ผู้รับ</p>
+					</th>
+					<th width="175">
+					<b style="font-size:10px;text-align: right;">MY945.ME</b>&nbsp;&nbsp;&nbsp;<b style="font-size:10px;">DROP OFF</b>
+						<p style="font-size:8px; margin-top: 0px;margin-bottom: 0px;">บริการ e-Parcel  </p>
+					<p style="font-size:8px; margin-top: 0px;margin-bottom: 0px;"> ใบอนุญาตลูกค้าธุรกิจ ขล. 2/2562</p>
+					<div class="box-address">
+					<label>บริษัท 945 โฮลดิ้ง จำกัด 945 หมู่ 5 ต.คูคต อ.ลำลูกกา ปทุมธานี 12130</label>
+					</div>
+					</th>
+				</tr>
+				<tr>
+				<td>
+				<div class="box-name">
+				
+					   <p class="cut-text"	style=" margin-bottom: 0px;margin-top: 0px; font-weight: bold; font-size: 14px;">{{ item.orderName }}</p>
+						<p style="margin-top: 0px;margin-bottom: 0px;font-size: 14px;"
+						   class="cut-text">{{ item.orderAddress }} {{ item.postCode }}</p>
+					<p style="margin-top: 0px;margin-bottom: 0px; font-size: 12px;"
+						   class="cut-text">
+							{{ item.materialLabel }}</p>
+					<p style="margin-top: 0px;margin-bottom: 0px;font-size: 14px;"><b>โทร. </b>{{ item.orderPhoneNo }}</p>					
+				</div>
+			<div class="box-default">
+				</div>
+			<div class="box-name">
+	            <label style="font-size: 12px;">NOTE :<i>{{ item.orderShortNote }}</i></label>
+				</div>
+				</td>
+				  <td  style="text-align:center;">
+				       <p style="margin-top: 0px;margin-bottom: 0px;">
+						<img style="margin-left: 10px;" src="data:image/png;base64,{{ barcode({code: item.tracking, type: 'qrcode', format: 'png', width: 3, height:3, color: [0, 0, 0]}) }}"/>
+					  </p>  
+						<div style="font-size:0;position:relative;width:145px;margin-left: 20px;margin-top: 2px;">
+						{{ barcode({code: item.tracking, type: 'c128', format: 'svg' ,width: 1 , height: 22,}) }}
+						</div>
+							 <p style="margin-top: 0px;margin-bottom: 0px;">{{ item.tracking }}</p>
+						 <div class="box-cod">
+						  <p style="margin-top: 0px;margin-bottom: 0px;font-size:20px;"><b>COD</b></p>
+						  <p style="margin-top: 0px;margin-bottom: 0px;font-size:10px;">พัสดุเก็บเงินปลายทาง</p>
+						  <p style="margin-top: 0px;margin-bottom: 0px;font-size:10px;text-align:left !important;">
+								&nbsp;เก็บเงิน  <b style="font-size:20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.codValue }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+								บาท
+						  </p>
+						</div>
+				  </td>
+				</tr>
+				</tbody>
+			</table>
+		</td>
+		{% endif %}
+		{% if loop.last and loop.length is odd %}
+		<td width="350"></td>
+		</tr>
+		{% endif %}
+
+		{% if loop.index is divisible by(8) and not loop.last %}
+			</table>
+			<div class="page-break"></div>
+			<!--   page 2 -->
+			<div style="height: 45px;"></div>
+		{% endif %}
+		{% if loop.last %}
+			</table>
+			</div>
+		{% endif %}
+
+	{% endfor %}
+	</div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+
+{% endblock %}

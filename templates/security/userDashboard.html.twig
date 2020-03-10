@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ข้อมูล User{% endblock %}
+
+  {% block body %}
+	  {% for label, flashes in app.session.flashbag.all %}
+		  {% for flash in flashes %}
+			  {% if ( label == 'success' ) %}
+				  <div class="alert alert-success alert-dismissible fade show">
+					  {{ flash }}
+				  </div>
+			  {% elseif ( label == 'error' ) %}
+				  <div class="alert alert-danger alert-dismissible fade show">
+					  {{ flash }}
+				  </div>
+			  {% endif %}
+		  {% endfor %}
+	  {% endfor %}
+	  <div class="row">
+		  <div class="col-md-12" style=" margin-top: 25px;">
+			  <div>
+				  <label>กรุณาระบุ Username สำหรับค้นหา</label>
+				  <form action="" method="get">
+					  <div class="form-row align-items-center">
+						  <div class="col-sm-11">
+							  <input type="text" name="search" class="form-control" id="searchUser"
+							         placeholder="Search...">
+						  </div>
+						  <div class="col-auto my-1">
+							  <button type="submit" class="btn btn-outline-primary">Search</button>
+						  </div>
+					  </div>
+				  </form>
+			  </div>
+			  <div class="row" >
+				  <div class="col-md-12" style="text-align: center;margin-top: 10px;">
+					  <b style="font-size: 22px">รายการข้อมูล User</b>
+				  </div>
+			  </div>
+			<div class="wrapper" >
+			  <table class=" materialTable" id="table_id">
+				  <thead style=" background-color: #c1d4ce;">
+				  <tr>
+					  <th style=" text-align: center;">Username</th>
+					  <th style=" text-align: center;">E-mail</th>
+					  <th style=" text-align: center;">ชื่อ Warehouse</th>
+					  <th style=" text-align: center;">สถานะ</th>
+					  <th style=" text-align: center;">Action</th>
+				  </tr>
+				  </thead>
+				  <tbody>
+				  {% for user in users %}
+					  <tr>
+						  <td scope="row" style=" text-align: center;" width="25%"><a>{{ user.username }}</a></td>
+						  <td scope="row" style=" text-align: left;" width="25%">{{ user.email }}</a></td>
+						  <td scope="row" style=" text-align: center;" width="15%">{{ user.defaultWarehouse }}</a></td>
+						  {% if user.userStatus == 1 %}
+							  <td scope="row" style=" text-align: center;" width="5%"><i class="fa fa-check"
+							                                                  aria-hidden="true"></i></td>
+						  {% else %}
+							  <td scope="row" style=" text-align: center;" width="5%"><i class="fa fa-times"
+							                                                  aria-hidden="true"></i></td>
+						  {% endif %}
+						  <td scope="row" style=" text-align: center;" width="5%">
+							  <a href="{{ path('user.edit', {id: user.id}) }}"><i class="fa fa-pencil-square-o"
+							                                                      aria-hidden="true"></i></a></td>
+					  </tr>
+				  {% endfor %}
+				  </tbody>
+			  </table>
+	  </div>
+
+
+			  <div class="navigation float-right" style="margin-top: 10px;">
+				  {{ knp_pagination_render(users) }}
+			  </div>
+
+		  </div>
+	  </div>
+
+  {% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

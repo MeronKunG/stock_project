@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ข้อมูล User{% endblock %}
+
+  {% block body %}
+      <div class="panel">
+          <div class="panel-body">
+              {{ form_start(form) }}
+              <div class="row">
+                  <div class="col-md-12" style="margin-top: 20px;">
+                      <div class="form-group">
+                          <label>Username</label>
+                          {{ form_widget(form.username, {"attr": {"class" : "form-control", "readonly" : "true"}}) }}
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Password</label>
+                          {{ form_widget(form.password, {"attr": {"class" : "form-control", "placeholder" : "กรุณากรอกอย่างน้อย 6 ตัวอักษร"}}) }}
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>E-mail</label>
+                          {{ form_widget(form.email, {"attr": {"class" : "form-control"}}) }}
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>สถานะ</label>
+                          {{ form_widget(form.userStatus, {"attr": {"class" : "form-control"}}) }}
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Warehouse Name</label>
+                          {{ form_widget(form.defaultWarehouse, {"attr": {"class" : "form-control"}}) }}
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>กำหนดสิทธิ์</label>
+                          {{ form_widget(form.roles, {"attr": {"class" : "form-control"}}) }}
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          {{ form_widget(form.submit) }}
+                      </div>
+                  </div>
+              </div>
+              {{ form_end(form) }}
+          </div>
+      </div>
+
+  {% endblock %}

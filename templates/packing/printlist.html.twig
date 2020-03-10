@@ -1,0 +1,144 @@
+{% block stylesheets %}
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+    <link href="{{ asset('css/styleA4test.css') }}" rel="stylesheet" type="text/css"/>
+    <style>
+
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+        }
+
+        #customers td, #customers th {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            color: black;
+        }
+        .text-hide{
+            display: block;
+            width: 10mm;
+            visibility: hidden;
+        }
+
+        .pagenum {
+            text-align: center;
+            display: none;
+        }
+        .name-hide{
+            visibility: hidden;
+        }
+
+        @media print {
+            .page-break {
+                display: block;
+                height: 0.3cm;
+                page-break-before: always;
+            }
+
+            .page-break-no {
+                display: block;
+                height: 0cm;
+                page-break-after: avoid;
+            }
+            .fixde {
+                position: fixed;
+                bottom: 20px;
+                margin-bottom: 30px;
+                text-align: center;
+            }
+            .pagenum {
+                position: absolute;
+                display: block;
+                margin-top: 280mm;
+                margin-left: 90mm;
+            }
+            .text-hide{
+                display: block;
+                width: 10mm;
+                visibility: hidden;
+            }
+            .name-hide{
+                visibility: hidden;
+             }
+        }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+    <body class="page">
+    <div class="page-break-no"></div>
+    <table width="80%" style="border:0px solid; margin-top:20px;" align="center" border="0" cellspacing="0"
+           cellpadding="0">
+        <tr>
+            <th  width="30%" style="text-align: right; padding-top: 5px;">
+            </th>
+            <th style="padding-top: 5px;text-align: center;"><label
+                        style="font-size: 22px;height: 20px; text-align: center;">รายการส่งของ</label></th>
+            <th  style="text-align: right; padding-top: 5px;">
+                <label style="font-size: 16px;height: 20px;margin-right: 20px;">วันที่ {{ date }}</label>
+            </th>
+        </tr>
+
+        {% for item in labels %}
+        {% if loop.index0 is divisible by(7) %}
+        <tr>
+            <!-- page body -->
+            <table width="90%" style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0"
+                   id="customers">
+                <tr style="height:30px;"></tr>
+                <tr>
+                    <th  style="text-align: center;">QR</th>
+                    <th  style="text-align: center;">ชื่อ</th>
+                    <th style="text-align: center;">ที่อยู่</th>
+                    <th style="text-align: center;">เบอร์โทร</th>
+                    <th  style="text-align: center;">ปณ.</th>
+                    <th style="text-align: center;">สินค้า</th>
+                    <th style="text-align: center;">COD</th>
+                    <th  style="text-align: center;">หมายเหตุ</th>
+                    <th   style="text-align: center;">ลายเซ็นต์</th>
+                </tr>
+                {% endif %}
+                <tr>
+
+                    <td   style="text-align: center;">
+                        <img
+                                src="data:image/png;base64,{{ barcode({code: item.tracking, type: 'qrcode', format: 'png', width: 2, height: 2, color: [0, 0, 0]}) }}"/>
+                        <p>{{ item.tracking }}</p>
+                    </td>
+                    <td  style="text-align: center;"> {{ item.orderName }}  </td>
+                    <td  style="text-align: center;">{{ item.orderAddress }}</td>
+                    <td  style="text-align: center;">{{ item.orderPhoneNo }}</td>
+                    <td style="text-align: center;">{{ item.postCode }}</td>
+                    <td  style="text-align: center;">{{ item.materialLabel }}</td>
+                    <td  style="text-align: center;">{{ item.codValue }}</td>
+                    <td  style="text-align: center;">{{ item.orderShortNote }}</td>
+                    <td  style="text-align: center;"><span class="text-hide">test etseek</span></td>
+                </tr>
+                {% if loop.index is divisible by(7) or loop.last %}
+            </table>
+            <!-- end page body -->
+        </tr>
+    </table>
+
+    {% if not loop.last %}
+        <div class="page-break"></div>
+    {% endif %}
+
+    {% endif %}
+    {% endfor %}
+
+    </body>
+{% endblock %}
+
+
+{% block javascripts %}
+
+
+{% endblock %}

@@ -1,0 +1,36 @@
+@charset "utf-8";
+/* CSS Document */
+	@page { size: A4 portrait; }
+	@page port { size: A4 portrait; }
+	@page land { size: A4 portrait; }
+	.land{filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);}
+td,th {
+  background: white;
+  font-size: 11pt;
+  margin-left: 0.4cm;
+  margin-top: 1.4cm;
+  margin-right: 0.4cm;
+  margin-bottom: 1.3cm;
+  border-width: 1px;
+  border-color: #eee;
+}
+@media all
+{
+  /* .page-break { display:none; }
+  .page-break-no{ display:none; } */
+    .page-break { display:block;height:0cm; page-break-before:always; }
+    .page-break-no{ display:block;height:0cm; page-break-after:avoid; }
+}
+ @media print
+ {
+   .page-break { display:block;height:0cm; page-break-before:always; }
+   .page-break-no{ display:block;height:0cm; page-break-after:avoid; }
+ }
+/*
+
+
+ @media noprint {
+   img {
+     display:none;
+   }
+ } */

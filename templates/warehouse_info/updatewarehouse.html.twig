@@ -1,0 +1,213 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet"/>
+{% endblock %}
+{% block title %}แก้ไขข้อมูล Warehouse{% endblock %}
+
+    {% block body %}
+        {{ form_start(formWarehouse) }}
+        <div class="row">
+            <div class="col-md-12" style=" margin-top: 20px;">
+                <div class="form-group">
+                    <label>รหัส Warehouse</label>
+                    {{ form_widget(formWarehouse.warehouseCode, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ชื่อ Warehouse</label>
+                    {{ form_widget(formWarehouse.warehouseName, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>สถานะ</label>
+                    {{ form_widget(formWarehouse.warehouseStatus, {"attr": {"class" : "form-control"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="margin-bottom: 0px;">
+                    <div class="col-md-6" style="padding-left: 0px;">
+                        <label>รหัสไปรษณีย์ ที่สามารถส่งสินค้าเองได้</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <select class="custom-select my-1 mr-sm-2 form-control" id="inlineFormCustomSelectPref">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wrapper-update ">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="zipCodeTable">
+                        <thead>
+                        <tr style=" background-color: #c1d4ce;">
+                            <th style=" text-align: center; width: 100%;">รหัสไปรษณีย์</th>
+                            <th style=" text-align: right;">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="
+    margin-top: 10px;
+">
+                <div class="form-group">
+                    {{ form_widget(formWarehouse.update, {"attr": {"class" : "btn btn-outline-primary float-right"}}) }}
+                </div>
+            </div>
+        </div>
+
+        {{ form_end(formWarehouse) }}
+
+        <div class="modal fade" id="modal_show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             data-keyboard="false" data-backdrop="static" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="messageText">
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="recordId" name="recordId" value=""/>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% for w in warehouseItem %}
+            <p>{{ w.zipcode }}</p>
+        {% endfor %}
+    {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            init();
+            $('#inlineFormCustomSelectPref').select2();
+            $.ajax({
+                type: "GET",
+                url: "https://apidev.whatitems.com/service/select/data/zipcode/api",
+                success: function (data) {
+                    $("#inlineFormCustomSelectPref").append('<option value>--เลือกรหัสไปรษณีย์--</option>');
+                    $.each(data, function (key, value) {
+                        $("#inlineFormCustomSelectPref").append('<option value="' + value.zipcode + '">' + value.zipcode + '</option>');
+                    });
+                }
+            });
+        });
+        let data = [];
+        let init = () => {
+            if (localStorage.warehouseZipCode_{{ id }}) {
+                let zipCodeArray = JSON.parse(localStorage.warehouseZipCode_{{ id }});
+                for (let i = 0; i < zipCodeArray.length; i++) {
+                    data.push({"zipCode": zipCodeArray[i].zipCode});
+                    prepareTableCell(zipCodeArray[i].zipCode);
+                }
+                addValue()
+            } else {
+                localStorage.warehouseZipCode_{{ id }} = JSON.stringify(data);
+            }
+        };
+
+        let addValue = () => {
+            var zipCodeArray = JSON.parse(localStorage.getItem("warehouseZipCode_{{ id }}"));
+            $("#update_warehouse_hiddenForm").val(JSON.stringify(zipCodeArray));
+        };
+
+        $("#inlineFormCustomSelectPref").change(function () {
+            let zipcode = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "/select/zipcode/config?zipcode=" + $(this).val(),
+                success: function (result) {
+                    if (result === 0) {
+                        let zipCodeArray = JSON.parse(localStorage.getItem("warehouseZipCode_{{ id }}"));
+                        let checkDuplicateZipCode = zipCodeArray.filter((item) => {
+                            return item.zipCode === zipcode;
+                        }).length;
+                        if (checkDuplicateZipCode === 0) {
+                            zipCodeArray.push({"zipCode": zipcode});
+                            localStorage.warehouseZipCode_{{ id }} = JSON.stringify(zipCodeArray);
+                            $("#update_warehouse_hiddenForm").val(localStorage.warehouseZipCode_{{ id }});
+                            prepareTableCell(zipcode);
+                            addValue()
+                        } else {
+                            $("#messageText").html('<p>คุณได้เเพิ่มรหัสไปรษณีย์ '+ zipcode +' นี้แล้ว</p>');
+                            $("#modal_show").modal('show');
+                        }
+                    } else {
+                        $("#messageText").html('<p>รหัสไปรษณีย์ '+ zipcode +' นี้ถูกใช้กับ warehouse อื่นแล้ว</p>');
+                        $("#modal_show").modal('show');
+                    }
+                }
+            });
+
+        });
+
+        let prepareTableCell = (zipCode) => {
+            let zipCodeTable = document.getElementById("zipCodeTable");
+            let row = zipCodeTable.insertRow();
+            let zipCodeCell = row.insertCell(0);
+            let deleteCell = row.insertCell(1);
+            zipCodeCell.style.textAlign = "center";
+            deleteCell.style.textAlign = "center";
+
+            zipCodeCell.innerHTML = zipCode;
+            deleteCell.innerHTML = '<a href="#" id="' + zipCode + '" name="remove" onclick="deleteItem(this.id,this)" ><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>';
+        };
+
+        let deleteItem = (zipCode, el) => {
+            let zipCodeArray = JSON.parse(localStorage.getItem("warehouseZipCode_{{ id }}"));
+
+            let zipCodeArrayFilter = zipCodeArray.filter(function (item) {
+                return item.zipCode !== zipCode;
+            });
+
+            localStorage.warehouseZipCode_{{ id }} = JSON.stringify(zipCodeArrayFilter);
+
+            var row = upTo(el, 'tr');
+            if (row) row.parentNode.removeChild(row);
+            var table = document.getElementById("zipCodeTable");
+            for (var i = table.rows.length - 1; i > 0; i--) {
+                table.deleteRow(i);
+            }
+            init();
+            addValue();
+        };
+
+        let upTo = (el, tagName) => {
+            tagName = tagName.toLowerCase();
+            while (el && el.parentNode) {
+                el = el.parentNode;
+                if (el.tagName && el.tagName.toLowerCase() == tagName) {
+                    return el;
+                }
+            }
+            return null;
+        }
+    </script>
+{% endblock %}

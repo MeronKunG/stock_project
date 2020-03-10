@@ -1,0 +1,230 @@
+{% block stylesheets %}
+	<!-- Style Print -->
+	<link href="{{ asset('css/styleA4test.css') }}" rel="stylesheet" type="text/css"/>
+
+	<style>
+
+		.cut-text {
+			width: 300px;
+			word-wrap: break-word;
+		}
+
+		.cut-transport {
+			width: 50px;
+			word-wrap: break-word;
+		}
+
+	</style>
+
+{% endblock %}
+
+{% block body %}
+
+	<div class="page">
+
+	<div class="page-break-no"></div>
+	<div style="height: 40px;"></div>
+	{% for item in labels %}
+		{% if loop.index0 is divisible by(8) %}
+			<!-- start page -->
+			<table  style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0" >
+		{% endif %}
+
+		{% if loop.index is odd %}
+		<!-- start row -->
+		<tr>
+		<td>
+			<table height="260" style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+				<tr>
+					<th width="240" style="text-align: left;padding-top: 3px;"><label
+								style="font-size: 16px;height: 20px;margin-left: 10px;">{{ item.invoice }}</label>
+					</th>
+					<th width="110" style="text-align: left;padding-top: 3px;margin-left: 10px;">
+						<label style="font-size: 16px;height: 20px;">{{ item.orderPhoneNo }}</label>
+					</th>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<b style=" margin-bottom: 0px;margin-top: 0px; padding-top: 0px; padding-bottom: 0px; font-weight: bold; font-size: 18px;margin-left: 10px;">ยอดเรียกเก็บ {{ item.codValue }} บาท</b>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+						<p class="cut-text"
+						   style=" margin-bottom: 0px;margin-top: 0px; font-weight: bold; font-size: 18px;margin-left: 10px;">{{ item.orderName }}</p>
+						<p style="margin-top: 0px;margin-bottom: 0px;margin-left: 10px;"
+						   class="cut-text">{{ item.orderAddress }} {{ item.postCode }}</p>
+
+					</td>
+				</tr>
+
+				{#                        <tr>#}
+				{#                            <td colspan="2" max-height="10">#}
+				{#                                <p style="margin-top: 0px;margin-bottom: 0px;"#}
+				{#                                   class="cut-text">{{ item.orderAddress }}</p>#}
+				{#                            </td>#}
+				{#                        </tr>#}
+
+				<tr>
+					<td colspan="2" width="100" max-height="10">
+						<p style="margin-top: 0px;margin-bottom: 0px; font-size: 14px;margin-left: 10px;"
+						   class="cut-text">
+							{{ item.materialLabel }}</p>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<table>
+							<tr>
+								<td >
+									<img style="margin-left: 10px;" src="data:image/png;base64,{{ barcode({code: item.tracking, type: 'qrcode', format: 'png', width: 3, height: 3, color: [0, 0, 0]}) }}"/>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td style="text-align:center;"><b>{{ item.tracking }}</b>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="barcode">{{ barcode({code: item.tracking, type: 'c39', format: 'svg',width: 1 }) }}</div>
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td><b>{{ item.typeTransport }}</b></td>
+										</tr>
+										<tr>
+											<td style="text-align:left; ">
+												<p style="margin-top: 0px;margin-bottom: 0px;margin-left: 0px;"
+												   class="cut-transport">{{ item.logisticsSelector }}</p></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="height: 15px;padding-bottom: 10px;padding-top: 0px;">
+						<label style="font-size: 12px;margin-left: 10px;">NOTE :<i>{{ item.orderShortNote }}</i></label>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</td>
+		<td width="35"></td>
+	{% else %}
+		<td>
+			<table height="260" style="border:0px solid" align="center" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+				<tr>
+					<th width="240" style="text-align: left;padding-top: 3px;"><label
+								style="font-size: 16px;height: 20px;">{{ item.invoice }}</label>
+					</th>
+					<th width="110" style="text-align: left;padding-top: 3px;"><label
+								style="font-size: 16px;height: 20px;">{{ item.orderPhoneNo }}</label>
+					</th>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+						<b style=" margin-bottom: 0px;margin-top: 0px; padding-top: 0px; padding-bottom: 0px; font-weight: bold; font-size: 18px;margin-left: 0px;">ยอดเรียกเก็บ {{ item.codValue }} บาท</b>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+						<p class="cut-text"
+						   style=" margin-bottom: 0px;margin-top: 0px; font-weight: bold; font-size: 18px;">{{ item.orderName }}</p>
+						<p style="margin-top: 0px;margin-bottom: 0px;"
+						   class="cut-text">{{ item.orderAddress }} {{ item.postCode }}</p>
+
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" width="100" max-height="10">
+						<p style="margin-top: 0px;margin-bottom: 0px; font-size: 14px;"
+						   class="cut-text">
+							{{ item.materialLabel }}</p>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<table>
+							<tr>
+								<td>
+									<img src="data:image/png;base64,{{ barcode({code: item.tracking, type: 'qrcode', format: 'png', width: 3, height: 3, color: [0, 0, 0]}) }}"/>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td style="text-align:center;"><b>{{ item.tracking }}</b>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="barcode">{{ barcode({code: item.tracking, type: 'c39', format: 'svg',width: 1 }) }}</div>
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td><b>{{ item.typeTransport }}</b></td>
+										</tr>
+										<tr>
+											<td style="text-align:left; ">
+												<p style="margin-top: 0px;margin-bottom: 0px;margin-left: 0px;"
+												   class="cut-transport">{{ item.logisticsSelector }}</p></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="height: 15px;padding-bottom: 10px;padding-top: 0px;">
+						<label style="font-size: 12px;">NOTE :<i>{{ item.orderShortNote }}</i></label>
+					</td>
+				</tr>
+
+				</tbody>
+			</table>
+		</td>
+		{% endif %}
+
+		{% if loop.last and loop.length is odd %}
+		<td width="350"></td>
+		</tr>
+		{% endif %}
+
+		{% if loop.index is divisible by(8) and not loop.last %}
+			</table>
+			<div class="page-break"></div>
+			<!--   page 2 -->
+			<div style="height: 45px;"></div>
+		{% endif %}
+		{% if loop.last %}
+			</table>
+			</div>
+		{% endif %}
+
+	{% endfor %}
+	</div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+
+{% endblock %}

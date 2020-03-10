@@ -1,0 +1,289 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}รายการ Check Out{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #overlay {
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cv-spinner {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px #ddd solid;
+            border-top: 4px #2e93e6 solid;
+            border-radius: 50%;
+            animation: sp-anime 0.8s infinite linear;
+        }
+
+        @keyframes sp-anime {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .is-hide {
+            display: none;
+        }
+
+    </style>
+{% endblock %}
+  {% block body %}
+
+      <div class="row">
+          <div class="col-md-12" style=" margin-top: 25px;">
+
+              <label>กรุณาระบุ ID สำหรับหรับค้นหา</label>
+              <form action="" method="get">
+                  <div class="form-row align-items-center">
+                      <div class="col-sm-11">
+                          <input type="text" name="search" class="form-control" id="searchPacking"
+                                 placeholder="Search...">
+                      </div>
+                      <div class="col-auto my-1">
+                          <button type="submit" class="btn btn-outline-primary">Search</button>
+                      </div>
+                  </div>
+              </form>
+
+              <div class="row">
+                  <div class="col-md-12" style="text-align: center;margin-top: 10px;">
+                      <b style="font-size: 22px">รายการ Packing</b>
+                  </div>
+              </div>
+
+
+              <div class="wrapper">
+                  <table id="table_checkIn">
+                      <tr>
+                          <th style=" text-align: center;" width="10%">ID</th>
+                          <th style=" text-align: center;">ชื่อ Warehouse</th>
+                          <th style=" text-align: center;">วันเริ่มต้น</th>
+                          <th style=" text-align: center;">วันเสร็จสิ้น</th>
+                          <th style=" text-align: center;" width="10%">สถานะ</th>
+                          <th style=" text-align: center;" width="5%">Action</th>
+                          <th style=" text-align: center;" width="5%">In Complete</th>
+                      </tr>
+                      <tbody>
+                      {% for item in items %}
+                          <tr>
+
+                              <td scope="row" style=" text-align: center;" width="10%">{{ item.packingBatchId }}</td>
+                              <td scope="row" style=" text-align: left;">{{ item.warehouseName }}</td>
+                              <td scope="row"
+                                  style=" text-align: center;">{{ item.startPackingBatchAt | date('d/m/Y H:i:s') }}</td>
+                              {% if item.startPackingBatchEnd != null %}
+                                  <td scope="row"
+                                      style=" text-align: center;">{{ item.startPackingBatchEnd | date('d/m/Y H:i:s') }}</td>
+                              {% else %}
+                                  <td scope="row"
+                                      style=" text-align: center;">-
+                                  </td>
+                              {% endif %}
+                              {% if item.packingStep == 0 %}
+                                  <td scope="row" style=" text-align: center;" width="10%"><b>ยกเลิกรายการ</b></td>
+                              {% elseif item.packingStep == 1 %}
+                                  <td scope="row" style=" text-align: center;" width="10%"><b>เช็ค Invoice</b></td>
+                              {% elseif item.packingStep == 2 %}
+                                  <td scope="row" style=" text-align: center;" width="10%"><b>เช็ค SKU</b></td>
+                              {% elseif item.packingStep == 3 %}
+                                  <td scope="row" style=" text-align: center;" width="10%"><b>เช็ค Material</b></td>
+                              {% elseif item.packingStep == 5 %}
+                                  <td scope="row" style=" text-align: center;" width="10%"><b>พิมพ์เอกเสาร</b></td>
+                              {% elseif item.packingStep == 6 %}
+                                  <td scope="row" style=" text-align: center;" width="10%"><b>ยืนยันใบเบิกของ</b></td>
+                              {% elseif item.packingStep == 7 %}
+                                  <td scope="row" style=" text-align: center;" width="10%"><b>สำเร็จ</b></td>
+                              {% endif %}
+                              <td scope="row" style=" text-align: center;" width="5%"><a href="#"
+                                                                                         class="viewPackingDetail"
+                                                                                         data-toggle="modal"
+                                                                                         id="{{ item.packingBatchId }}"
+                                                                                         data-target="#myModal"><i
+                                              class="fa fa-search"
+                                              aria-hidden="true"></i></a>
+                              </td>
+
+                              {% if item.status is not null %}
+                                  <td scope="row" style=" text-align: center;" width="5%"><a href="#"
+                                                                                             class="viewPackingDetail2"
+                                                                                             data-toggle="modal"
+                                                                                             id="{{ item.packingBatchId }}"
+                                                                                             data-target="#myModal2"><i
+                                                  class="fa fa-search"
+                                                  aria-hidden="true"></i></a></td>
+                              {% else %}
+                                  <td scope="row" style=" text-align: center;" width="5%"></td>
+                              {% endif %}
+
+
+                          </tr>
+                      {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+
+              <div class="navigation float-right">
+                  {{ knp_pagination_render(items) }}
+              </div>
+
+              <!-- The Modal -->
+              <div class="modal fade" id="myModal">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                              <h4 class="modal-title" id="packingBatchId"></h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <!-- Modal body -->
+                          <table class="table table-striped table-bordered table-hover">
+                              <thead>
+                              <tr>
+                                  <th style=" text-align: center;">No.</th>
+                                  <th style=" text-align: center;">Sub Invoice</th>
+                              </tr>
+                              </thead>
+                              <tbody id="packingItem">
+                              </tbody>
+                          </table>
+                          <div class="modal-body" id="modal-body1">
+                          </div>
+
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+
+              <!-- The Modal -->
+              <div class="modal fade" id="myModal2">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="loading-overlay">
+                              <div class="cv-spinner">
+                                  <span class="spinner"></span>
+                              </div>
+                          </div>
+                          <div class="load-display">
+                              <div class="modal-header">
+                                  <h4 class="modal-title" id="packingBatchId_code"></h4>
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+                              <!-- Modal body -->
+                              <table class="table table-striped table-bordered table-hover">
+                                  <thead>
+                                  <tr>
+                                      <th style=" text-align: center;">No2.</th>
+                                      <th style=" text-align: center;">Sub Invoice</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody id="packingItem_code">
+                                  </tbody>
+                              </table>
+                              <div class="modal-body" id="modal-body2">
+                              </div>
+                          </div>
+
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+      </div>
+  {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+        $(".viewPackingDetail").click(function () {
+            // var packingBatchId = {subInvoice: $(this).attr('id')};
+            var packingBatchId = $(this).attr('id');
+            var bodyItem = document.getElementById('modal-body1');
+            var tableItem = document.getElementById('packingItem');
+            var titleCode = document.getElementById('packingBatchId');
+            tableItem.innerHTML = "";
+
+            $.ajax({
+                type: "POST",
+                url: "/packing/view",
+                data: {'packingBatchId': packingBatchId},
+                success: function (data) {
+                    titleCode.innerHTML = 'Packing Batch Id : ' + packingBatchId;
+                    if (data != null) {
+                        for (let idx in data.listInvoice) {
+                            var count = parseInt(idx) + 1;
+                            tableItem.innerHTML += '<tr><td style="text-align: center;">' + count + '</td><td style="text-align: center;">' + data.listInvoice[idx].subInvoice + '</td></tr>';
+                        }
+                        bodyItem.innerHTML = '<div style="text-align: right">' + 'จำนวนรายการ : ' + '<b>' + data.countInvoice + '</b>' + '</div>';
+                    } else {
+                        tableItem.innerHTML += '<tr><td>ไม่มีข้อมูล</td><td></td><td></td></tr>';
+                        bodyItem.innerHTML = 'ทั้งหมด : 0 รายการ';
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error : ' + errorThrown);
+                }
+            });
+        });
+        $(".viewPackingDetail2").click(function () {
+            var packingBatchId = $(this).attr('id');
+            var bodyItem = document.getElementById('modal-body2');
+            var tableItem = document.getElementById('packingItem_code');
+            var titleCode = document.getElementById('packingBatchId_code');
+            tableItem.innerHTML = "";
+
+            $.ajax({
+                type: "POST",
+                url: "/packing/incomplete/view",
+                data: {'packingBatchId': packingBatchId},
+                success: function (data) {
+                    titleCode.innerHTML = 'Packing Batch Id : ' + packingBatchId;
+                    if (data != null) {
+                        for (let idx in data.listInvoice) {
+                            var count = parseInt(idx) + 1;
+                            tableItem.innerHTML += '<tr><td style="text-align: center;">' + count + '</td><td style="text-align: center;">' + data.listInvoice[idx].subInvoice + '</td></tr>';
+                        }
+                        bodyItem.innerHTML = '<div style="text-align: right">' + 'จำนวนรายการ : ' + '<b>' + data.countInvoice + '</b>' + '</div>';
+                    } else {
+                        tableItem.innerHTML += '<tr><td>ไม่มีข้อมูล</td><td></td><td></td></tr>';
+                        bodyItem.innerHTML = 'ทั้งหมด : 0 รายการ';
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error : ' + errorThrown);
+                }
+            }).done(function () {
+                setTimeout(function () {
+                    $(".loading-overlay").fadeOut(300);
+                    $(".load-display").show("fade");
+                }, 500);
+            });
+        });
+    </script>
+    <script src="{{ asset('js/lightbox.js') }}"></script>
+{% endblock %}
+

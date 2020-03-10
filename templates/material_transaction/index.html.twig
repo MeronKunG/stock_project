@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ข้อมูลการทำรายการ Material{% endblock %}
+
+  {% block body %}
+    {% for message in app.flashes('success') %}
+      <div class="alert alert-success">
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    <div >
+      <div class="col-md-12" style=" margin-top: 25px;">
+        <b >ชื่อ Material : </b> <label style="font-weight: normal;">{{ materialName }}</label>
+
+        <div class="wrapper"  style="margin-top: 10px;">
+        <table id="table_courier">
+          <thead style="background-color: #c1d4ce;">
+        <tr>
+          <th  style=" text-align: center;">วันที่ทำรายการ</th>
+          <th  style=" text-align: center;">รหัสรายการ</th>
+          <th  style=" text-align: center;">ตัวย่อ</th>
+{#          <th  style=" text-align: center;">เลขอ้างอิง</th>#}
+          <th  style=" text-align: center;">ชื่อ warehouse</th>
+          <th  style=" text-align: center;">จำนวน</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for item in items %}
+          <tr>
+            <td scope="row"  style=" text-align: center;" width="30%">{{ item.materialTransactionDate|date('d/m/Y H:i:s') }}</td>
+            <td scope="row"  style=" text-align: center;" width="30%">{{ item.materialTransactionCode }}</td>
+            <td scope="row"  style=" text-align: center;" width="10%">{{ item.transactionType }}</td>
+{#            <td scope="row"  style=" text-align: right;">{{ item.referenceId }}</td>#}
+            <td scope="row"  style=" text-align: left;" width="30%">{{ item.warehouseName }}</td>
+            {% if item.transactionType == 'COT' %}
+            <td scope="row"  style="text-align: right; color: red" width="10%">{{ item.quantity }}</td>
+            {% else %}
+            <td scope="row"  style="text-align: right;" width="10%">{{ item.quantity }}</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        <tr>
+          <td scope="row"  colspan="4" style=" text-align: right;"><b style="font-size: 20px;">คงเหลือ</b></td>
+          <td scope="row"  colspan="5" style=" text-align: right;"> <b style="font-size: 20px;">{{ sum }}</b></td>
+        </tr>
+        </tbody>
+      </table>
+        </div>
+      <div class="navigation  float-right">
+        {{ knp_pagination_render(items) }}
+      </div>
+    </div>
+    </div>
+{% endblock %}

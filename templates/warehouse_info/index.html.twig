@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ข้อมูล Warehouse{% endblock %}
+
+  {% block body %}
+      {% for message in app.flashes('success') %}
+          <div class="alert alert-success">
+              {{ message }}
+          </div>
+      {% endfor %}
+      {% for message in app.flashes('errors') %}
+          <div class="alert alert-error">
+              {{ message }}
+          </div>
+      {% endfor %}
+
+      <div class="row">
+          <div class="col-md-12" style=" margin-top: 25px;">
+              <div>
+                  <label>กรุณาระบุชื่อ Warehouse สำหรับค้นหา</label>
+                  <form action="" method="get">
+                      <div class="form-row align-items-center">
+                          <div class="col-sm-11">
+                              <input type="text" name="search" class="form-control" id="searchWarehouse"
+                                     placeholder="Search...">
+                          </div>
+                          <div class="col-auto my-1">
+                              <button type="submit" class="btn btn-outline-primary">Search</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="row">
+                  <div class="col-md-12" style="text-align: center;margin-top: 10px;">
+                      <b style="font-size: 22px">รายการข้อมูล Warehouse</b>
+                  </div>
+              </div>
+
+              <div class="wrapper">
+                  <table id="table_warehouse">
+                      <tr>
+                          <th style=" text-align: center;">Warehouse Code</th>
+                          <th style=" text-align: center;">ชื่อ Warehouse</th>
+                          <th style=" text-align: center;">สถานะ</th>
+                          <th style=" text-align: center;">Action</th>
+                      </tr>
+                      <tbody>
+                      {% for warehouse in warehouses %}
+                          <tr>
+                              <td scope="row" style=" text-align: center;"
+                                  width="30%">{{ warehouse.warehouseCode }}</td>
+                              <td scope="row" style="text-align: left;">{{ warehouse.warehouseName }}</td>
+
+                              {% if warehouse.warehouseStatus == 1 %}
+                                  <td scope="row" style=" text-align: center;" width="5%"><i class="fa fa-check"
+                                                                                             aria-hidden="true"></i>
+                                  </td>
+                              {% else %}
+                                  <td scope="row" style=" text-align: center;" width="5%"><i class="fa fa-times"
+                                                                                             aria-hidden="true"></i>
+                                  </td>
+                              {% endif %}
+
+                              <td scope="row" style=" text-align: center;" width="5%">
+                                  {#							  <a href="/update/warehouse/{{ warehouse.warehouseCode }}" onclick="checkWarehouseId({{ warehouse.warehouseCode }})"><i class="fa fa-pencil-square-o"#}
+                                  {#							                                                             aria-hidden="true"></i></a>#}
+                                  <a onclick="checkWarehouseId('{{ warehouse.warehouseCode }}')"><i
+                                              class="fa fa-pencil-square-o"
+                                              aria-hidden="true"></i></a>
+                                  {# <a href="#" id="{{ warehouse.warehouseId }}" class="deleteWarehouse" data-toggle="modal" data-target="#deleteModal" role="button">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i></a>  #}
+                              </td>
+                          </tr>
+                      {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+              <div class="navigation float-right" style="margin-top: 10px;">
+                  {{ knp_pagination_render(warehouses) }}
+              </div>
+          </div>
+      </div>
+  {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        let data = [];
+        let checkWarehouseId = (id) => {
+            $.ajax({
+                type: "GET",
+                url: "/service/checkZipCode?id=" + id,
+                success: function (result) {
+                    if (result.length !== 0) {
+                        $.each(result, function (key, value) {
+                            data.push({"zipCode": value.zipcode});
+                        });
+                    }
+                    localStorage.setItem('warehouseZipCode_' + id, JSON.stringify(data));
+                    window.location.href = '/update/warehouse/'+id;
+                }
+            });
+        };
+    </script>
+{% endblock %}

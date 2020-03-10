@@ -1,0 +1,91 @@
+<style>
+    .dropdown-item:focus, .dropdown-item:hover {
+        background-color: #425DCE;
+        opacity: 0.5;
+        color: white;
+    }
+
+
+</style>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="
+    padding-top: 5px;
+    padding-bottom: 5px;
+">
+    <a class="navbar-brand mr-1" href="{{ path('view_summary') }}"> <img src="{{ asset('images/warehouse.png') }}"
+                                                                         height="40px">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText" style="margin-left: 20px;">
+
+        <ul class="navbar-nav mr-auto">
+            {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+            <li class="nav-item active dropdown">
+                <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-arrow-up" aria-hidden="true"></i> Check In
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{{ path('checkin_info') }}">List Check-in</a>
+                    <a class="dropdown-item" href="{{ path('checkin_add') }}">New Check-in</a>
+                </div>
+            </li>
+            <li class="nav-item active dropdown">
+                <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-arrow-down" aria-hidden="true"></i> Check Out
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{{ path('pending_info') }}">Pending Note</a>
+                    <a class="dropdown-item" href="{{ path('packing_info') }}">List Check-out</a>
+                    <a class="dropdown-item" href="{{ path('packing') }}">New Check-out</a>
+                    <a class="dropdown-item" href="{{ path('checkout_info') }}">List Manual Check-out</a>
+                    <a class="dropdown-item" href="{{ path('checkout_add') }}">Manual Check-out</a>
+
+                </div>
+            </li>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i> Information
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{ path('warehouse_info') }}">List Warehouse</a>
+                        <a class="dropdown-item" href="{{ path('warehouse_add') }}">New Warehouse</a>
+                        <a class="dropdown-item" href="{{ path('material_info') }}">List Material</a>
+                        <a class="dropdown-item" href="{{ path('material_add') }}">New Material</a>
+                        <a class="dropdown-item" href="{{ path('sku_info') }}">List SKU</a>
+                        <a class="dropdown-item" href="{{ path('sku_add') }}">New SKU</a>
+                        <a class="dropdown-item" href="{{ path('user.dashboard') }}">User Management</a>
+                        <a class="dropdown-item" href="{{ path('app_add_user') }}">New User</a>
+                        <a class="dropdown-item" href="{{ path('courier_info') }}">List Courier</a>
+                        <a class="dropdown-item" href="{{ path('courier_add') }}">New Courier</a>
+
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="nav navbar-nav  navbar-right">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" style="padding-bottom: 0px;">
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ app.user.username }}
+                </a>
+                <b style="font-size:12px;text-align: right;margin-bottom: 0px; color: grey; font-weight: normal;margin-left: 30px;">{{ app.user.defaultWarehouse.warehouseName }}</b>
+
+                <div class="dropdown-menu dropdown-menu-right text-center">
+                    <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            </li>
+        </ul>
+        {% endif %}
+    </div>
+</nav>

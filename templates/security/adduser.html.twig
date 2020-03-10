@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}เพิ่มข้อมูล User{% endblock %}
+
+	{% block body %}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{{ form_start(userForm) }}
+		<div class="row">
+			<div class="col-md-12" style="margin-top: 20px;">
+				<div class="form-group">
+					<label>Username <a style="color: red">*</a></label>
+					{{ form_widget(userForm.username, {"attr": {"class" : "form-control"}}) }}
+					{{ form_errors(userForm.username) }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>Password <a style="color: red">*</a></label>
+					{{ form_widget(userForm.password, {"attr": {"class" : "form-control", "placeholder" : "กรุณากรอกอย่างน้อย 6 ตัวอักษร"}}) }}
+					{{ form_errors(userForm.password) }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>E-mail <a style="color: red">*</a></label>
+					{{ form_widget(userForm.email, {"attr": {"class" : "form-control"}}) }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>Warehouse Name</label>
+					{{ form_widget(userForm.defaultWarehouse, {"attr": {"class" : "form-control"}}) }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>กำหนดสิทธิ์</label>
+					{{ form_widget(userForm.roles, {"attr": {"class" : "form-control"}}) }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					{{ form_widget(userForm.submit) }}
+				</div>
+			</div>
+		</div>
+		{{ form_end(userForm) }}
+	{% endblock %}

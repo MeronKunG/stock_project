@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ข้อมูล Courier{% endblock %}
+
+  {% block body %}
+	  {% for message in app.flashes('success') %}
+		  <div class="alert alert-success">
+			  {{ message }}
+		  </div>
+	  {% endfor %}
+	  {% for message in app.flashes('errors') %}
+		  <div class="alert alert-error">
+			  {{ message }}
+		  </div>
+	  {% endfor %}
+
+	  <div class="row">
+		  <div class="col-md-12" style=" margin-top: 25px;">
+			  <div>
+				  <label>กรุณาระบุชื่อ Courier สำหรับค้นหา</label>
+				  <form action="" method="get">
+					  <div class="form-row align-items-center">
+						  <div class="col-sm-11">
+							  <input type="text" name="search" class="form-control" id="searchCourier"
+							         placeholder="Search...">
+						  </div>
+						  <div class="col-auto my-1">
+							  <button type="submit" class="btn btn-outline-primary">Search</button>
+						  </div>
+					  </div>
+				  </form>
+			  </div>
+			  <div class="row" >
+				  <div class="col-md-12" style="text-align: center;margin-top: 10px;">
+					  <b style="font-size: 22px">รายการข้อมูลบริษัทขนส่ง</b>
+				  </div>
+			  </div>
+			<div class="wrapper" >
+			  <table id="table_courier">
+				  <tr>
+					  <th style=" text-align: center;" width="10%">รหัส</th>
+					  <th style=" text-align: center;" width="40%">ชื่อ Courier</th>
+                      <th style=" text-align: center;" width="5%">ชื่อย่อ</th>
+					  <th style=" text-align: center;" width="10%">ขนาดพัสดุ ที่รับได้สูงสุด</th>
+					  <th style=" text-align: center;" width="5%">สถานะ</th>
+					  <th style=" text-align: center;" width="5%">Action</th>
+				  </tr>
+				  <tbody>
+				  {% for courier in couriers %}
+					  <tr>
+						  <td scope="row" style=" text-align: center;" width="10%">{{ courier.courierCode }}</td>
+						  <td scope="row" style="text-align: left;" width="40%">{{ courier.courierName }}</td>
+                          <td scope="row" style="text-align: center;" width="5%">{{ courier.courierPrefix }}</td>
+						  <td scope="row" style="text-align: center;" width="10%">{{ courier.sizeCode.sizeName }}</td>
+
+						  {% if courier.courierStatus == 1 %}
+							  <td scope="row" style=" text-align: center; " width="5%"><i class="fa fa-check" aria-hidden="true"></i></td>
+						  {% else %}
+							  <td scope="row" style=" text-align: center;" width="5%"><i class="fa fa-times" aria-hidden="true"></i></td>
+						  {% endif %}
+
+						  <td scope="row" style=" text-align: center;" width="5%">
+							  <a href="/update/courier/{{ courier.courierCode }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+						  </td>
+					  </tr>
+				  {% endfor %}
+				  </tbody>
+			  </table>
+			  </div>
+			  <div class="navigation float-right">
+				  {{ knp_pagination_render(couriers) }}
+			  </div>
+		  </div>
+	  </div>
+  {% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'base2.html.twig' %}
+{% block title %}Check Out Material{% endblock %}
+	{% block body %}
+        {% for label, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                {% if ( label == 'success' ) %}
+                    <div class="alert alert-success alert-dismissible fade show">
+                        {{ flash }}
+                    </div>
+                {% elseif ( label == 'errorMaterial' ) %}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        {{ flash }}
+                    </div>
+                {% elseif ( label == 'error' ) %}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        {{ flash }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        {{ form_start(formCheckOut, {"attr": {"id" : "material_check_out"}}) }}
+        <div class="row">
+            <div class="col-md-12" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label>Order No.</label>
+                    {{ form_widget(formCheckOut.checkOutCode, {"attr": {"value": orderCode, "class" : "form-control", "readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Warehouse Name</label>
+                    {{ form_widget(formCheckOut.warehouseCode, {"attr": {"class" : "form-control", "readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ประเภท</label>
+                    <div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            {{ form_widget(formCheckOut.checkOutType[0], {"attr": {"class": "custom-control-input"}}) }}
+                            <label class="custom-control-label" for="material_check_out_checkOutType_0">{{ formCheckOut.checkOutType[0].vars.label }}</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            {{ form_widget(formCheckOut.checkOutType[1], {"attr": {"class": "custom-control-input"}}) }}
+                            <label class="custom-control-label" for="material_check_out_checkOutType_1">{{ formCheckOut.checkOutType[1].vars.label }}</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            {{ form_widget(formCheckOut.checkOutType[2], {"attr": {"class": "custom-control-input"}}) }}
+                            <label class="custom-control-label" for="material_check_out_checkOutType_2">{{ formCheckOut.checkOutType[2].vars.label }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="window_show">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>หมายเหตุ</label>
+                    <textarea class="form-control" name="otherText" id="otherField" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Ref No <a style="color: red">*</a></label>
+                    {{ form_widget(formCheckOut.checkOutRefNo, {"attr": {"class" : "form-control"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Attachment <a style="color: red; font-size: 10px">* ไฟล์รูปภาพ (.jpg , .png)</a></label>
+                    {{ form_widget(formCheckOut.checkOutImage, {"attr": {"class" : "form-control-file"}}) }}
+                    {{ form_errors(formCheckOut.checkOutImage) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Material <a style="color: red">*</a></label>
+                    {{ form_widget(formCheckOut.materialName, {"attr": {"class" : "form-control"}}) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <table id="materialTable">
+                <thead>
+                <tr style=" background-color: #c1d4ce;">
+                    <th scope="col" style=" text-align: center;">รหัส Material</th>
+                    <th scope="col" style=" text-align: center;">ชื่อ Material</th>
+                    <th scope="col" style=" text-align: center;">Quantity</th>
+                    <th scope="col" style=" text-align: center;">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-10 col-md-10 float-right" style="padding-right: 0px; margin-bottom: 10px">
+            {{ form_widget(formCheckOut.save) }}
+        </div>
+        {{ form_end(formCheckOut) }}
+
+
+    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $("#window_show").hide();
+        $(":radio").change(function (val) {
+            if(this.id === "material_check_out_checkOutType_2") {
+                $("#window_show").show("fade");
+                $("#otherField").prop('required',false);
+            } else {
+
+                $("#window_show").hide("fade");
+                $("#otherField").prop('required',false);
+            }
+        })
+    </script>
+    <script src="{{ asset('js/scriptCheckOut.js') }}"></script>
+
+{% endblock %}

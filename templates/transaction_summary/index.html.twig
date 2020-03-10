@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+{% block title %}สรุปยอด Material{% endblock %}
+  {% block body %}
+      {#      <button v-on:click="showTable">Show Table</button>#}
+
+      <div class="row">
+          <div class="col-md-12" style=" margin-top: 25px;">
+              <div class="row">
+                  <div class="col-md-12" style="text-align: center;margin-top: 10px;">
+                      <b style="font-size: 22px">รายการ Material ใน Stock</b>
+                  </div>
+              </div>
+              <div class="wrapper">
+                  <table>
+                      <thead style="background-color: #c1d4ce;">
+                      <tr>
+                          <th style=" text-align: center;" width="20%">รหัส Material</th>
+                          <th style=" text-align: center;" width="80%">ชื่อ Material</th>
+                          <th style=" text-align: center;" width="20%">รหัส warehouse</th>
+                          <th style=" text-align: center;" width="35%">จำนวน</th>
+                      </tr>
+                      </thead>
+                      <tbody v-for="result in results">
+                      {% for item in items %}
+                          <tr>
+                              <td scope="row" style=" text-align: center;" width="20%">{{ item.materialCode }}</td>
+                              <td scope="row" style=" text-align: left;" width="80%">{{ item.materialName }}</td>
+                              <td scope="row" style=" text-align: center;" width="20%">{{ item.warehouseCode }}</td>
+                              <td scope="row" style=" text-align: right;" width="35%">{{ item.materialQty }}</td>
+                          </tr>
+                      {% endfor %}
+                      </tbody>
+                  </table>
+
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col-md-12" style=" margin-top: 25px;">
+              <div class="row">
+                  <div class="col-md-12" style="text-align: center;margin-top: 10px;">
+                      <b style="font-size: 22px">รายการ Material ค้างส่ง</b>
+                  </div>
+              </div>
+              <div class="wrapper">
+                  <table>
+                      <thead style="background-color: #c1d4ce;">
+                      <tr>
+                          <th style=" text-align: center;" width="20%">รหัส Material</th>
+                          <th style=" text-align: center;" width="80%">ชื่อ Material</th>
+                          <th style=" text-align: center;" width="20%">รหัส warehouse</th>
+                          <th style=" text-align: center;" width="35%">จำนวน</th>
+                      </tr>
+                      </thead>
+                      <tbody v-for="result in results">
+                      {% if inCompleteItems is not empty %}
+                          {% for item in inCompleteItems %}
+                              <tr>
+                                  <td scope="row" style=" text-align: center;" width="20%">{{ item.materialCode }}</td>
+                                  <td scope="row" style=" text-align: left;" width="80%">{{ item.materialName }}</td>
+                                  <td scope="row" style=" text-align: center;" width="20%">{{ item.warehouseCode }}</td>
+                                  <td scope="row" style=" text-align: right;"
+                                      width="35%">{{ item.materialQuantity }}</td>
+                              </tr>
+                          {% endfor %}
+                      {% else %}
+                          <tr>
+                              <td scope="row" style=" text-align: center;" colspan="4" width="20%">
+                                  <div class="alert alert-success">
+                                      ไม่พบรายการค้างส่ง
+                                  </div>
+                              </td>
+                          </tr>
+                      {% endif %}
+                      </tbody>
+                  </table>
+
+              </div>
+          </div>
+      </div>
+
+  {% endblock %}
+

@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+{% block title %}แก้ไขข้อมูล Invoice{% endblock %}
+    {% block body %}
+        {{ form_start(formInvoice) }}
+        <div class="row">
+            <div class="col-md-12" style=" margin-top: 20px;">
+                <div class="form-group">
+                    <label>รหัส Invoice</label>
+                    {{ form_widget(formInvoice.subInvoice, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style=" margin-top: 20px;">
+                <div class="form-group">
+                    <label>วันที่สั่งสินค้า</label>
+                    {{ form_widget(formInvoice.orderReceiveAt, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>ชื่อผู้รับ</label>
+                    {{ form_widget(formInvoice.orderName, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label>ชี่อยู่</label>
+                    {{ form_widget(formInvoice.orderAddress, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label>รหัสไปรษณีย์</label>
+                    {{ form_widget(formInvoice.postCode, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label>หมายเหตุ</label>
+                    {{ form_widget(formInvoice.orderShortNote, {"attr": {"class" : "form-control","Readonly" : "true"}}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>สถานะ</label>
+                    {{ form_widget(formInvoice.invoiceStatus, {"attr": {"class" : "form-control"}}) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form_widget(formInvoice.update, {"attr": {"class" : "btn btn-outline-primary float-right"}}) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(formInvoice) }}
+    {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/lightbox.js') }}"></script>
+{% endblock %}

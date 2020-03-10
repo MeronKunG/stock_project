@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ข้อมูล Material{% endblock %}
+
+    {% block body %}
+	    {% for label, flashes in app.session.flashbag.all %}
+		    {% for flash in flashes %}
+			    {% if ( label == 'success' ) %}
+				    <div class="alert alert-success alert-dismissible fade show">
+					    {{ flash }}
+				    </div>
+			    {% elseif ( label == 'error' ) %}
+				    <div class="alert alert-danger alert-dismissible fade show">
+					    {{ flash }}
+				    </div>
+			    {% endif %}
+		    {% endfor %}
+	    {% endfor %}
+
+	    {{ form_start(formMaterial) }}
+	    <div class="row">
+		    <div class="col-md-12" style="margin-top: 20px;">
+			    <div class="form-group">
+				    <label>รหัส Material</label>
+				    {{ form_widget(formMaterial.materialCode, {"attr": {"value": materialCode, "class" : "form-control", "readonly" : "true"}}) }}
+			    </div>
+		    </div>
+	    </div>
+
+	    <div class="row">
+		    <div class="col-md-11">
+			    <label>ชื่อ Material <a style="color: red">*</a></label>
+		    </div>
+		    <div class="col-md-1">
+			    <tt id="materialNameVal" align="right">0/50</tt>
+		    </div>
+		    <div class="col-md-12">
+			    {{ form_widget(formMaterial.materialName, {"attr": {"class" : "form-control", "maxlength" : "50"}}) }}
+
+			    <div id="materialName-result"></div>
+		    </div>
+	    </div>
+
+	    <div class="row" style="margin-top: 15px;">
+		    <div class="col-md-11">
+			    <label>ชื่อ Full Material</label>
+		    </div>
+		    <div class="col-md-1">
+			    <tt id="materialFullNameVal">0/255</tt>
+		    </div>
+		    <div class="col-md-12">
+			    {{ form_widget(formMaterial.materialFullName, {"attr": {"class" : "form-control", "maxlength" : "255"}}) }}
+		    </div>
+	    </div>
+
+
+		<div class="row" style="margin-top: 15px;">
+			<div class="col-md-12">
+              <div class="form-group">
+                <label>Attachment <a style="color: red; font-size: 10px">ไฟล์รูปภาพ (.jpg , .png)</a></label>
+                 {{ form_widget(formMaterial.materialImage, {"attr": {"class" : "form-control-file"}}) }}
+	              {{ form_errors(formMaterial.materialImage) }}
+                </div>
+			</div>
+		</div>
+
+	  
+
+	    <div class="row">
+		    <div class="col-md-12">
+			    <div class="form-group">
+				    {{ form_widget(formMaterial.save, {"attr": {"class" : "btn btn-outline-primary float-right"}}) }}
+			    </div>
+		    </div>
+	    </div>
+
+	    {{ form_end(formMaterial) }}
+	    
+    {% endblock %}
+
+	{% block javascripts %}
+		    {{ parent() }}
+		    <script>
+                $("#material_info_materialName").keyup(function (e) {
+                    let materialNameVal = $("#material_info_materialName").val().length;
+                    $("#materialNameVal").html(materialNameVal + "/50");
+                });
+                $("#material_info_materialFullName").keyup(function (e) {
+                    let materialFullNameVal = $("#material_info_materialFullName").val().length;
+                    $("#materialFullNameVal").html(materialFullNameVal + "/255");
+                });
+
+                $("#material_info_materialName").change(function (e) {
+                    let materialName = $(this).val();
+                    $.post('/material/checkmaterialName', {'materialName': materialName}, function (data) {
+                        if (data === true) {
+                            $("#material_info_materialName").removeClass("is-valid").addClass("is-invalid");
+                            $("#materialName-result").html("มีชื่อ " + materialName + " อยู่แล้ว");
+                            $("#materialName-result").removeClass("valid-feedback").addClass("invalid-feedback");
+                        } else {
+                            $("#material_info_materialName").removeClass("is-invalid").addClass("is-valid");
+                            $("#materialName-result").html("ชื่อ " + materialName + " นี้สามารถใช้ได้");
+                            $("#materialName-result").removeClass("invalid-feedback").addClass("valid-feedback");
+
+                        }
+                    });
+                });
+		    </script>
+	    {% endblock %}
